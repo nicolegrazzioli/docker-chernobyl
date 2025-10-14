@@ -1,0 +1,31 @@
+version: '3.8'
+services: 
+  # banco de dados
+  mysql:
+    image: mysql:8.0.30 # Choose your desired MySQL version
+    container_name: mysql_db_cherno
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234 # Set a strong password
+      MYSQL_DATABASE: cherno
+      MYSQL_USER: mysql_user # Create a default user
+      MYSQL_PASSWORD: 1234 # Set the password for the default user
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist database data
+    restart: always # Ensure the container restarts automatically
+  
+  #processamento PHP
+  php:
+    # image: php:8.2-fpm
+    build: .
+    container_name: php_cherno
+    ports:
+      - "3000:80"
+    volumes:
+      - ./chernobyl-desktop:/var/www/html
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
