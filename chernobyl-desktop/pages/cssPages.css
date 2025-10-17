@@ -1,0 +1,104 @@
+#fundo {
+        height: 940px;
+        width: 1980px;
+        box-shadow: inset -30px -30px 30px 0px #000;
+    }
+
+    #fundo:hover {
+
+
+    }
+
+    .container-fluid {
+        position: relative;
+        background-color: black;
+        color: white;
+    }
+
+    #image {
+        position: absolute;
+    }
+
+    #texto1 {
+        position: absolute;
+        font-size: 20px;
+        font-weight: bold;
+        left: 100px;
+        top: 23%;
+    }
+    #texto2 {
+        position: absolute;
+        font-size: 50px;
+        font-weight: bold;
+        left: 100px;
+        top: 30%;
+    }
+    #texto3 {
+        position: absolute;
+        font-family: verdana;
+        font-size: 19px;
+        left: 100px;
+        top: 43%;
+    }
+    #texto4 {
+        position: absolute;
+        font-family: verdana;
+        color: gray !important;
+        font-size: 18px;
+        left: 100px;
+        top: 53%;
+    }
+    #texto5 {
+        position: absolute;
+        font-family: verdana;
+        font-size: 18px;
+        left: 100px;
+        top: 58%;
+    }
+    #texto6 {
+        position: absolute;
+        font-family: verdana;
+        font-size: 16px;
+        left: 100px;
+        top: 63%;
+    }
+    #texto7 {
+        position: absolute;
+        font-family: verdana;
+        font-size: 19px;
+        left: 100px;
+        top: 68%;
+    }
+    #play {
+        transition: all .2s ease-in-out;
+        border-radius: 80%;
+        width: 80px;
+        height: 80px;
+    }
+    #play:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+    #texto8 {
+        position: absolute;
+        font-family: verdana;
+        font-size: 19px;
+        left: 100px;
+        top: 95%;
+        margin-left: 36%;
+        text-decoration: underline;
+        color: white;
+    }
+    #tela1 {
+        height: 240px;
+        width: 320px;
+        border-radius: 10px;
+        transition: all .2s ease-in-out;
+        margin-left: 20px;
+    }
+    #tela1:hover {
+        transform: scale(1.1);
+        background-position: -60px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        cursor: pointer;
+    }

@@ -1,0 +1,2146 @@
+- Endereço: C:\xampp\htdocs\cherno2\arrayAssociativo.php:
+<?php
+//funfa
+require_once 'shared/header.php';
+require_once 'controller/autenticationController.php';
+?>
+<style>
+    tbody {
+        color: white;
+    }
+
+</style>
+<body>
+    <div class="container">
+
+        <table id="tablePages" class="table table-bordered">
+            <thead>
+                <tr style="color: white;">
+                    <th>Id</th>
+                    <th>Título da página</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+//Abrir conexão com banco de dados
+//Executar a consulta sql
+//SELECT * FROM filmes;
+
+                $result = array(
+                    array('id' => 1, 'nome' => 'Pripyat', 'imagem' => 'img/rad2-g.jpg'),
+                    array('id' => 2, 'nome' => 'O desastre', 'imagem' => 'img/ab-g.jpg'),
+                    array('id' => 3, 'nome' => 'Impactos curto prazo', 'imagem' => 'img/ani-g.jpg'),
+                    array('id' => 3, 'nome' => 'Impactos longo prazo', 'imagem' => 'img/mask-g.jpg'),
+                    array('id' => 5, 'nome' => 'Pé de elefante', 'imagem' => 'img/pe-g.png'),
+                    array('id' => 6, 'nome' => 'Pé de elefante: como foi feito', 'imagem' => 'img/pe2.jpg'),
+                    array('id' => 7, 'nome' => 'Lições e legado', 'imagem' => 'img/park-g.jpg'),
+                    array('id' => 8, 'nome' => 'Química?', 'imagem' => 'img/reat-g.jpg'),
+                    array('id' => 10, 'nome' => 'Biologia?', 'imagem' => 'img/roda-g.jpg'),
+                    array('id' => 9, 'nome' => 'Física?', 'imagem' => 'img/out-g.jpg'),
+                );
+
+                foreach ($result as $valor) {
+                    echo ('<tr>');
+                    echo ('<td>');
+                    echo ($valor['id']);
+                    echo ('</td>');
+                    echo ('<td>');
+                    echo ($valor['nome']);
+                    echo ('</td>');
+                    echo ('<td>');
+                    echo ('<img src="' . $valor['imagem'] . '"alt="img" style="height: 240px; width: 160px;">');
+                    echo ('</td>');
+                    echo ('</tr>');
+                }
+                ?>
+            </tbody>
+        </table>
+        <script>
+            $(document).ready(function () {
+                $('#tableFilmes').dataTable();
+            });
+        </script>
+    </div>
+    <?php
+    require_once './shared/footer.php';
+    ?>
+</body>
+
+
+
+
+
+- Endereço: C:\xampp\htdocs\cherno2\cadastrarPerfisPage.php:
+<html>
+    <?php require_once './controller/autenticationController.php'; ?>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </head>
+    <br/>
+    <br/>
+    <br/>
+    <div class="float-start">
+                <a style="text-decoration: none;" href="listarPerfisPage.php">Voltar</a>
+            </div>
+    <br/>
+    <body class="container">
+        <h2>Perfis de usuário</h2>
+        <?php
+        if(isset($_REQUEST['cod'])){
+            require_once './controller/perfisController.php';
+            print_r($perfilEdit);
+        }
+        ?>
+        <form method="post" action="controller/perfisController.php">
+            <div class="mb-3 mt-3">
+                <label for="nome">Name:</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="<?php echo isset($perfilEdit)? $perfilEdit->getNome():'' ?>" placeholder="Enter name of user" >
+                                                                                        <!-- se exitir perfilEdit-->
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="nome">Kid's?</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="kids" name="kids" value="1" <?php echo (isset($perfilEdit)?(($perfilEdit->getInfantil()==1)? 'checked': ''):'') ?>> 
+                                                                    <!-- verifica se é infantil: se for marca checked-->
+                    <label class="form-check-label" for="mySwitch">Yes</label>
+                </div>
+            </div>
+            <input type="hidden" name="loggedUser" value="<?php echo (isset($_SESSION['id']) ? $_SESSION['id'] : ''); ?>">
+            <input type="hidden" name="id" value="<?php echo isset($perfilEdit)? $perfilEdit->getId():'0' ?>">
+            <br><!-- comment -->
+            <input class="btn btn-primary" type="submit" value="Save">
+        </form>
+    </body>
+</html>
+
+
+- Endereço: C:\xampp\htdocs\cherno2\home.php:
+<?php
+//PERFIS
+require_once 'controller/autenticationController.php';
+//require_once 'shared/header.php';
+?>
+
+<html>
+    <head>
+        <title>quem</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+        <script src="js/cdn.datatables.net_1.13.4_js_jquery.dataTables.min.js" type="text/javascript"></script>
+        <link href="css/cdn.datatables.net_1.13.4_css_jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <style>
+            body {
+                background-image: url(img/bghome.png);
+                text-decoration: none !important;
+                text-align: center;
+            }
+            h1 {
+                margin-top: 9%;
+                color: white;
+            }
+            .perfil {
+                text-align: center;
+                margin-top: 5%;
+                color: #c7c7c7 !important;
+                font-size: 20px;
+            }
+            .perfil p:hover {
+                color: white;
+            }
+
+            #foto {
+                transition: all .2s ease-in-out;
+            }
+            #foto:hover {
+                padding:2px;
+                background-color:white;
+            }
+            .botao {
+                margin-top: 15%;
+                background: rgba(121, 138, 148, 0.5);
+                border-radius: 5%;
+                color: white;
+                width: 150px;
+                height: 50px;
+                font-family: Sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1><b>Quem está assistindo?</b></h1>
+
+        <div class="container-md">
+            <div class="perfil">
+                <div class="row justify-content-around" style="">
+                    <div class="col col-lg-2">
+                        <a href="inicio.php"><img src="img/mexico.jpg" id="foto" style="height: 180px; width: 180px; border-radius: 50%;"> </a> <br/>
+                        <br/> <a href="inicio.php" style="color: #c7c7c7; text-decoration: none !important;"> <p><b>Nicole</b></p> </a>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a href="inicio.php"><img src="img/mexico.jpg" id="foto" style="height: 180px; width: 180px; border-radius: 50%;"> </a> <br/>
+                        <br/> <a href="inicio.php" style="color: #c7c7c7; text-decoration: none !important;"> <p><b>1</b></p> </a>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a href="inicio.php"><img src="img/mexico.jpg" id="foto" style="height: 180px; width: 180px; border-radius: 50%;"> </a> <br/>
+                        <br/> <a href="inicio.php" style="color: #c7c7c7; text-decoration: none !important;"> <p><b>2</b></p> </a>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a href="inicio.php"><img src="img/mexico.jpg" id="foto" style="height: 180px; width: 180px; border-radius: 50%;"> </a> <br/>
+                        <br/> <a href="inicio.php" style="color: #c7c7c7; text-decoration: none !important;"> <p><b>3</b></p> </a>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a href="inicio.php"><img src="img/add.png" id="foto" style="height: 180px; width: 180px; border-radius: 50%;"> </a> <br/>
+                        <br/> <a href="inicio.php" style="color: #c7c7c7; text-decoration: none !important;"> <p><b>Adicionar novo perfil</b></p> </a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="botao">
+                <a><b>Editar perfil</b></a> 
+            </button>
+
+        </div>
+
+<?php
+require_once 'shared/footer.php';
+?>
+
+- Endereço: C:\xampp\htdocs\cherno2\index.php:
+<?php
+//LOGIN
+?>
+
+<html>
+    <head>
+        <title>login</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+        <script src="js/cdn.datatables.net_1.13.4_js_jquery.dataTables.min.js" type="text/javascript"></script>
+        <link href="css/cdn.datatables.net_1.13.4_css_jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <style>
+            body {
+                background-image: url(img/back.png);
+            }
+
+            .termo {
+                color: white;
+                text-align: center;
+                margin-top: 25%;
+                font-size: 10px;
+            }
+
+            .container{
+
+            }
+            #form {
+                background-color:transparent;
+                font-family: verdana;
+                text-align: center;
+                border-radius: 30px;
+                color: white;
+            }
+            #termos:hover {
+                cursor: pointer;
+            }
+            #esqc:hover {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-md">
+<!--            <form method="get" action="controller/loginController.php">-->
+            <form method="post" action="controller/usuariosController.php">
+
+                <div class="col-md-12">
+                    <img src="img/chernobyl_b.png" style="margin-left: 30%; margin-top: 60px;">
+                </div>
+                <p style="margin-top: 50px; text-align: center; color: white; "><b>Faça login com a sua conta</b></p>
+                <br/>
+
+                <div class="row" style="margin-left: 10%; margin-right: 10%; padding: 20px;">
+                    <div class="mb-3 mt-3">
+                        <label for="email" class="form-label"></label>
+                        <input type="text" id="form" class="form-control" style="" id="email" value="<?php echo isset($_COOKIE['rememberMe']) ? $_COOKIE['rememberMe']:'' ?>"
+                               placeholder="Email" name="email" required="">
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="senha" class="form-label" ></label>
+                        <input type="password" id="form" class="form-control" style="" id="senha" 
+                               placeholder="Senha" name="senha" required="">
+                    </div>
+                    <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="rememberMe" <?php echo isset($_COOKIE['rememberMe']) ? 'checked':'' ?>>
+                                    <label class="form-check-label" for="rememberMe"> Remember me</label>
+                                </div>
+                            </div>
+                    <br/>
+                    <p id="esqc" style="color: white; text-align: center;"><u>Esqueceu sua senha?</u></p>
+
+                    <div class="d-grid">
+                        <br/>
+                        <input type="submit" value="Continuar"
+                               class="btn" style="background-color: #18a484; font: white; font-family: verdana; text-align: center; border-radius: 30px; color: white;">
+                        <br>
+
+
+                    </div>
+                    <p class="termo">Fazendo login, você concorda com os <span id="termos" style="color: #c7893e;">Termos de Uso de Chernobyl</span> e o Acordo de Licença que pode ser enocntrado no site de Chernobyl</p>
+                    <?php
+                    if ($_REQUEST) {
+                        if (isset($_REQUEST['cod'])) {
+                            $cod = $_REQUEST['cod'];
+                            if ($cod == 'error') {
+                                echo('<div class="d-grid">');
+                                echo('<div class="alert alert-danger">');
+                                echo('Usuário ou senha inválidos!');
+                                echo('</div>');
+                                echo ('</div>');
+                            } else if ($cod == '172') {
+                                echo('<div class="d-grid">');
+                                echo('<div class="alert alert-warning">');
+                                echo('Sua sessão expirou!');
+                                echo('</div>');
+                                echo ('</div>');
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+            </form>
+        </div>
+
+        <?php
+        require_once 'shared/footer.php';
+        ?>
+
+
+- Endereço: C:\xampp\htdocs\cherno2\inicio.php:
+<?php
+
+//INICIO
+require_once 'shared/header.php';
+require_once 'controller/autenticationController.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+
+<style>
+    #telao {
+        margin-left: 1% !important;
+        margin-right: 1% !important;
+        height: 500px;
+        width: 1900px;
+        cursor: pointer;
+        transition:all .3s;
+        text-align: center;
+    }
+    #cont {
+        color: white;
+        margin-left: 4%;
+        margin-top: 1%;
+        font-size: 20px;
+    }
+    #tela {
+        height: 480px;
+        width: 320px;
+        border-radius: 10px;
+        transition: all .2s ease-in-out;
+        margin-left: 20px;
+    }
+    #tela:hover {
+        transform: scale(1.1);
+        background-position: -60px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        cursor: pointer;
+    }
+    #topico {
+        margin-left: 2em;
+    }
+    .slide {
+        text-align: center;
+    }
+
+</style>
+
+<nav style="color: white;">
+            <?php
+            @session_start();
+            require_once './controller/autenticationController.php';
+            echo 'Olá ' . $_SESSION['login'];
+            ?>
+</nav>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li><img src="img/c1.png" id="telao"></li>
+            <li><img src="img/c2.png" id="telao"></li>
+            <li><img src="img/c3.png" id="telao"></li>
+            <li><img src="img/c5.png" id="telao"></li>
+            <li><img src="img/c6.png" id="telao"></li>
+            <li><img src="img/c7.png" id="telao"></li>
+            <li><img src="img/c9.png" id="telao"></li>
+            <li><img src="img/c10.png" id="telao"></li>
+            <li><img src="img/c11.png" id="telao"></li>
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+    </div>
+</div>
+
+<p id="cont" > <img src="img/chernobyl_b.png" style="height: 8%; width: 8%;"> <b>Chernobyl Originais e exclusivos</b></p>
+
+<!-- 9 topicos -->
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pages/introducaoPage.php"><img id="tela" src="img/rad2-g.jpg"></a>
+                    <a href="pages/desastrePage.php"><img id="tela" src="img/ab-g.jpg"></a>
+                    <a href="pages/impcurtoPage.php"><img id="tela" src="img/ani-g.jpg"></a>
+                    <a href="pages/implongoPage.php"><img id="tela" src="img/mask-g.jpg"></a>
+                    <a href="pages/peintPage.php"><img id="tela" src="img/pe-g.png"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pages/pefeitoPage.php"><img id="tela" src="img/pe2.jpg"></a> 
+                    <a href="pages/legadoPage.php"><img id="tela" src="img/park-g.jpg"></a>
+                    <a href="pages/quimicaPage.php"><img id="tela" src="img/reat-g.jpg"></a>
+                    <a href="pages/biologiaPage.php"><img id="tela" src="img/roda-g.jpg"></a>
+                    <a href="pages/fisicaPage.php"><img id="tela" src="img/out-g.jpg"></a>
+                </div><br/></li>
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+
+<br/>
+<br/>
+<br/>
+<?php
+
+require_once 'shared/footer.php';
+?>
+
+
+
+- Endereço: C:\xampp\htdocs\cherno2\listarPerfisPage.php:
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <?php
+        require_once 'shared/header.php';
+        require_once 'controller/autenticationController.php';
+        ?>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <style>
+            * {
+                color: white;
+            }
+        </style>
+    </head>
+    <body class="container">
+        <?php
+        if ($_REQUEST) {
+            $cod = $_REQUEST['cod'];
+            if ($cod == 'sucess') {
+                echo '<div class="alert alert-success">';
+                echo '<b>Ok:</b> Operation realized with success.';
+                echo '</div>';
+            } else {
+                echo '<div class="alert alert-danger">';
+                echo '<b>Error:</b> Error!!!!';
+                echo '</div>';
+            }
+        }
+        ?>
+        
+        <div class="container">
+            <div class="float-start">
+                <a style="text-decoration: none;" href="inicio.php">Voltar</a>
+            </div>
+            <div class="float-end">
+            <a style="text-decoration: none;" href="cadastrarPerfisPage.php">Novo perfil do usuário</a>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <th>Nome</th>
+            <th>Informações</th>
+        </thead>
+        <tbody>
+            <?php
+            require_once './controller/perfisController.php';
+            if (isset($perfisList)) {
+                foreach ($perfisList as $data) {
+                    echo '<tr>';
+                    echo '<td>' . $data['nome'] . '</td>';
+                    echo '<td>';
+                    //&&: separa 2 query string -- cria 2 variaveis
+                    echo '<a onclick="confirm("Delete register?")" class="btn btn-danger" href="./controller/perfisController.php?cod=del&&id=' . $data['id'] . '">Excluir</a>';
+                    echo '<label>|</label>';
+                    echo '<a class="btn btn-warning" href="./cadastrarPerfisPage.php?cod=edit&&id=' . $data['id'] . '">Editar</a>';
+                    echo '</td>';
+                    echo '</tr>';
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+        </div>
+        
+</body>
+</html>
+
+
+- Endereço: C:\xampp\htdocs\cherno2\Dump20231130.sql:
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+--
+-- Host: localhost    Database: cherno
+-- ------------------------------------------------------
+-- Server version	8.0.30
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `perfis`
+--
+
+DROP TABLE IF EXISTS `perfis`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `perfis` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `imagem` varchar(200) DEFAULT NULL,
+  `infantil` int DEFAULT '0',
+  `usuarios_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_perfis_usuarios_idx` (`usuarios_id`),
+  CONSTRAINT `fk_perfis_usuarios` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `perfis`
+--
+
+LOCK TABLES `perfis` WRITE;
+/*!40000 ALTER TABLE `perfis` DISABLE KEYS */;
+INSERT INTO `perfis` VALUES (15,'perfil 2','',1,2),(16,'perfil 3','',1,2),(17,'zdsfg','',0,2),(18,'marildinha','',0,2);
+/*!40000 ALTER TABLE `perfis` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `senha` varchar(45) NOT NULL,
+  `data_nascimento` date NOT NULL,
+  `fone` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'a','a@a','a','1900-10-10',3),(2,'brasil','b@b','b','1900-10-10',3),(3,'marilda','c@c','c','1900-10-10',3),(8,'f','f@f','f','1900-10-10',555);
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-11-30  9:57:05
+
+
+- Endereço: C:\xampp\htdocs\cherno2\controller\autenticationController.php:
+<?php
+@session_start();
+//Se não existir a session login
+if(!isset($_SESSION['login'])){
+    header('location:index.php?cod=172');
+}.
+.
+- Endereço: C:\xampp\htdocs\cherno2\controller\loginController.php:
+<?php
+
+//if ($_GET) {
+//    //echo('funcionou....');
+//    //print_r($_GET);
+//    $nome = $_GET['nome'];
+//    $senha = $_GET['senha'];
+//    
+//    if ($nome == 'a' && $senha == 'a') {
+//        
+//        //Cria a sessão "login"
+//        session_start();
+//        $_SESSION['nome'] = $nome;
+//        //Se o usuário e senha estiver correta 
+//        //redireciona para a home.
+//        header('location:../home.php');
+//    } else {
+//        //Caso contrário redireciona para a index
+//        //com o código de erro.
+//        header('location:../index.php?cod=171');
+//    }
+//} else {
+//    //redireciona a navegação para a pagina informada.
+//    header('location:../index.php');
+//}.
+
+- Endereço: C:\xampp\htdocs\cherno2\controller\logoutController.php:
+<?php
+if ($_REQUEST) {
+    @session_start();
+    @session_destroy();
+    @session_abort();
+    header('location:../index.php');
+}
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\controller\perfisController.php:
+<?php
+
+if ($_POST) {
+    @$id = $_POST['id'];
+    @$nome = $_POST['nome'];
+    @$kids = $_POST['kids'];
+    @$loggedUser = $_POST['loggedUser'];
+
+    require_once '../model/perfisModel.php';
+    $perfis = new perfisModel();
+    $perfis->setNome($nome);
+    $kids = ($kids == 1 ? 1 : 0);
+    $perfis->setInfantil($kids);
+    $perfis->setUsuarios_id($loggedUser);
+
+    //Inserir ou Atualizar
+    //Se NÃO existir o id no formulário insere
+    if ($id == 0) {
+        //inserir
+        $total = $perfis->insert();
+        if ($total == 1) {
+           header('location:../listarPerfisPage.php?cod=sucess');
+        } else {
+            header('location:../listarPerfisPage.php?cod=error');
+        }
+    } else {
+        //editar
+        //Sempre tenho que configurar o id senão atualizo todos os registros da base de dados
+        $perfis->setId($id);
+        $total = $perfis->update();
+         if ($total == 1) {
+            header('location:../listarPerfisPage.php?cod=sucess');
+        } else {
+            header('location:../listarPerfisPage.php?cod=error');
+        }
+    }
+} else if ($_REQUEST) {
+    //Excluir ou carregar dado por id do banco para editar
+    if (@$_REQUEST['id']) {
+
+        $cod = $_REQUEST['cod'];
+        $id = $_REQUEST['id'];
+        
+        //Se for para editar o caminho de perfis model é o da raiz
+        if ($cod == 'edit') {
+            require_once './model/perfisModel.php';
+        } else {
+            //Caminho para deletar
+            require_once '../model/perfisModel.php';
+        }
+
+
+        $perfis = new perfisModel();
+        //Se vier de request (query string) e a qs for id -- DELETA
+        if ($cod == 'del') {
+            if ($perfis->delete($id) == 1) {
+                //Apagou com sucesso
+                header('location:../listarPerfisPage.php?cod=sucess');
+            } else {
+                //Erro no apagar
+                header('location:../listarPerfisPage.php?cod=error');
+            }
+        } else if ($cod == 'edit') {
+            //Carrega o perfil selecionado
+            $perfilEdit = $perfis->loadById($id);
+            //echo $perfilEdit->getInfantil();
+        } else {
+            //Erro no apagar
+            header('location:../listarPerfisPage.php?cod=error');
+        }
+    } else {
+        //Listar
+        //Crio a variável perfisList que vai ser utilizada na listarPerfisPage.php
+        $perfisList = loadAll();
+    }
+} else {
+    //Listar
+    //Crio a variável perfisList que vai ser utilizada na listarPerfisPage.php
+    $perfisList = loadAll();
+}
+
+function loadAll() {
+    //Listar
+    require_once './model/perfisModel.php';
+    $perfis = new perfisModel();
+    $perfisList = $perfis->loadAll();
+    return $perfisList;
+}
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\controller\usuariosController.php:
+<?php
+
+//serve como adm das classes
+//acessa sempre a model
+//sem codigo sql
+//header response -- redireciona
+
+if ($_POST) {
+    //vem do formulario via post -- inserir, editar ou logar
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+
+    require_once '../model/usuariosModel.php';
+    //cria um objeto do tipo usuario
+    $user = new usuariosModel();
+
+    if ($user->login($email, $senha) == 1) { // usuario acertou email e senha
+        session_start();
+        $_SESSION['id'] = $user->getId(); //armazena id do usuario
+        $_SESSION['login'] = $user->getNome(); //busca nome do usuario
+        
+        //cookie
+        if (isset($_POST['rememberMe'])) {
+            //cria o cookie
+            echo "ok";
+            setcookie('rememberMe', $email, time() + (86400 * 30), "/"); // 86400 = 1 day
+        }
+        //nao armazena senha em session
+        header('location:../inicio.php');
+        exit();
+    } else {
+        header('location:../index.php?cod=171');
+    }
+} else if ($_REQUEST) {
+    //excluir
+} else {
+    //exibir
+}
+?>
+
+
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\model\ConexaoMysql.php:
+<?php
+
+class ConexaoMysql {
+
+    protected $mysqli;
+    protected $server = '127.0.0.1'; //Endereço do servidor
+    protected $user = 'root'; //Usuario que acessa o banco
+    protected $pass = 'asasas'; //Senha do usuário
+    protected $dataBase = 'cherno'; //Nome da base de dados
+
+    /** Informa o TOTAL de qualquer registro afetado
+      (SELECT, INSERT, UPDATE, DELETE) na base. */
+    public $total = 0;
+
+    /** Informa o ultimo id do registro inserido
+      na base de dados */
+    public $lastInsertId = 0; //Retorna a chave primária do registro
+
+    public function getConnection(){
+        return $this->mysqli;
+    }
+
+    //Converte datas para o banco
+    public function ConvertToDate($data){
+        $data = explode('-', $data);
+        return ' ' . $data[2] . '-' . $data[1] . '-' . $data[0];
+    }
+
+    /** Conectar com banco de dados */
+    public function Conectar(){
+        $this->mysqli = new mysqli($this->server, $this->user, $this->pass, $this->dataBase);
+        //Verifica se Não(!) conseguiu conectar
+        if ($this->mysqli->errno) {
+           echo("Problema na conexao com banco de dados. Erro:" . $this->mysqli->connect_errno);
+           exit();
+        }
+        
+        $this->mysqli->set_charset('utf8');
+    }
+
+    /** Realiza as consultas (SELECT) */
+    public function Consultar($sql){
+
+        try {
+            //Receber o parametro $sql e realizar a consulta            
+            if ($result = $this->mysqli->query($sql)){
+                //Atualizar o contador informando o número de registros retornados na consulta
+                $this->total = $result->num_rows;
+                return $result;
+            } else {
+                $this->total = 0;
+                return null;
+            }
+        } catch (Exception $exc) {
+            //Desconectar....
+            $this->Desconectar();
+        }
+    }
+
+    /** Realiza INSERT, UPDATE e DELETE */
+    public function Executar($sql){
+        try {
+            //Realiza a query(INSERT, UPDATE e DELETE)
+            if ($resultado = $this->mysqli->query($sql)){
+                //Guarda o último ID inserido na tabela
+                $lastId = $this->mysqli->insert_id;
+                //Atualiza o contador com os registos afetados
+                $this->total = $this->mysqli->affected_rows;
+                //Comita a transação
+                $this->mysqli->commit();
+
+                return $lastId;
+            }
+            else {
+                //Nenhum registro foi afetado a partir da consulta enviada.
+                $this->total = 0;
+                //return "Nenhum registro foi afetado.";
+                throw new Exception('Erro');
+            }
+        } catch (Exception $exc) {
+            //Em caso de erro desconecta
+            $this->mysqli->rollback();
+            $this->Desconectar();
+        }
+    }
+
+    /** Fecha a conexao */
+    public function Desconectar(){
+        $this->mysqli->close();
+    }
+
+}
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\model\perfisModel.php:
+<?php
+ require_once 'ConexaoMysql.php';
+class perfisModel{             
+
+    //Propriedades
+    protected $id;
+    protected $nome;
+    protected $imagem;
+    protected $infantil;
+    protected $usuarios_id;
+    
+    //Métodos acessores e modificadores
+    //publico -- pode ser acessado por todos
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getNome() {
+        return $this->nome;
+    }
+
+    public function getImagem() {
+        return $this->imagem;
+    }
+
+    public function getInfantil() {
+        return $this->infantil;
+    }
+
+    public function getUsuarios_id() {
+        return $this->usuarios_id;
+    }
+
+    public function setId($id): void {
+        $this->id = $id;
+    }
+
+    public function setNome($nome): void {
+        $this->nome = $nome;
+    }
+
+    public function setImagem($imagem): void {
+        $this->imagem = $imagem;
+    }
+
+    public function setInfantil($infantil): void {
+        $this->infantil = $infantil;
+    }
+
+    public function setUsuarios_id($usuarios_id): void {
+        $this->usuarios_id = $usuarios_id;
+    }
+
+    //Método construtor da classe
+    public function __construct() {
+        
+    }
+     
+    //metodos especialistas -- metodos que fazem algo na classe (inserir dado)
+    public  function loadAll(){
+        //require_once './model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        $sql = 'SELECT * FROM perfis';
+        $result = $db->Consultar($sql);
+        $db->Desconectar();
+        return $result;
+    }
+    
+    public  function loadById($id){
+        //require_once './model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        $sql = 'SELECT * FROM perfis WHERE id = '.$id;
+        $result = $db->Consultar($sql);
+        if($db->total==1){
+            foreach ($result as $data) {
+                $this->id = $data['id']; //array que vem do bd
+                $this->imagem = $data['imagem']; //array que vem do bd
+                $this->infantil = $data['infantil']; //array que vem do bd
+                $this->nome = $data['nome']; //array que vem do bd
+                $this->usuarios_id = $data['usuarios_id']; //array que vem do bd
+            }
+        }
+        $db->Desconectar();
+        //retorno o objeto do tipo perfil
+        return $this;
+    }
+    
+    public  function delete($id){
+        //require_once '../model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        $sql = 'DELETE FROM perfis WHERE id = '.$id;
+        $db->Executar($sql);
+        $db->Desconectar();
+        return $db->total;
+    }
+    
+     public  function insert(){
+        //require_once '../model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        //$sql = 'INSERT INTO perfis VALUES(0, "","",0,1)';
+        $sql = 'INSERT INTO perfis VALUES(0, "'.$this->nome.'","",'.$this->infantil.','.$this->usuarios_id.')';
+        echo $sql;
+        $db->Executar($sql);
+        $db->Desconectar();
+        return $db->total;
+    }
+    
+    public  function update(){
+        //require_once '../model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        //$sql = 'UPDATE perfis SET(0,"","",0,1) WHERE id=1';
+        $sql = 'UPDATE perfis SET nome="'.$this->nome.'",'
+                . 'infantil='.$this->infantil.','
+                . 'usuarios_id='.$this->usuarios_id.' WHERE id='.$this->id;
+        echo $sql;
+        $db->Executar($sql);
+        $db->Desconectar();
+        return $db->total;
+    }
+
+}
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\model\usuariosModel.php:
+<?php
+
+class usuariosModel {
+//propriedades
+    protected $id;
+    protected $nome;
+    protected $email;
+    protected $senha;
+    protected $data_nascimento;
+    protected $fone;
+    protected $tiposUsuariosId;
+
+    public function __construct() {
+        //metodo construtor
+    }
+
+    //metodos acessores
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getNome() {
+        return $this->nome;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getSenha() {
+        return $this->senha;
+    }
+
+    public function getData_nascimento() {
+        return $this->data_nascimento;
+    }
+
+    public function getFone () {
+        return $this->fone;
+    }
+
+    public function getTiposUsuariosId() {
+        return $this->tiposUsuariosId;
+    }
+
+    //metodos modificadores
+    public function setId($id): void {
+        $this->id = $id;
+    }
+
+    public function setNome($nome): void {
+        $this->nome = $nome;
+    }
+
+    public function setEmail($email): void {
+        $this->email = $email;
+    }
+
+    public function setSenha($senha): void {
+        $this->senha = $senha;
+    }
+
+    public function setData_nascimento($data_nascimento): void {
+        $this->data_nascimento = $data_nascimento;
+    }
+
+    public function setFone ($fone): void {
+        $this->fone = $fone;
+    }
+
+    public function setTiposUsuariosId($tiposUsuariosId): void {
+        $this->tiposUsuariosId = $tiposUsuariosId;
+    }
+
+//metodos especialistas -- metodos que fazem algo na classe (inserir dado)
+    public function loadAll() {
+        require_once '../ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        $sql = 'SELECT * FROM usuarios';
+        $result = $db->Consultar($sql);
+        $db->Desconectar();
+        return $result;
+    }
+
+    public function loadById($id) {
+        require_once '../ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        $sql = 'SELECT * FROM usuarios WHERE id = ' . $id;
+        $result = $db->Consultar($sql);
+        if ($db->total == 1) {
+            foreach ($result as $data) {
+                $this->id = $data['id']; //array que vem do bd
+                $this->nome = $data['nome']; //array que vem do bd
+                $this->email = $data['email']; //array que vem do bd
+                $this->senha = $data['senha']; //array que vem do bd
+                $this->dataNascimento = $data['data_nascimento']; //array que vem do bd
+                $this->fone = $data['fone']; //array que vem do bd
+                $this->tiposUsuariosId = $data['tipos_usuarios_id']; //array que vem do bd
+            }
+        }
+        $db->Desconectar();
+      }
+
+    public function login($email, $senha) {
+        require_once '../model/ConexaoMysql.php';
+        $db = new ConexaoMysql();
+        $db->Conectar();
+        //SELECT * FROM usuarios where email="" and senha="";
+        $sql = 'SELECT * FROM usuarios WHERE email="' . $email . '" and senha="' . $senha . '"'; //aspas duplas em string
+        $result = $db->Consultar($sql);
+        if ($db->total == 1) {
+            foreach ($result as $data) { //carrega objetos na memoria
+                $this->id = $data['id']; //array que vem do bd
+                $this->nome = $data['nome']; //array que vem do bd
+                $this->email = $data['email']; //array que vem do bd
+                $this->senha = $data['senha']; //array que vem do bd
+                $this->dataNascimento = $data['data_nascimento']; //array que vem do bd
+                $this->fone = $data['fone']; //array que vem do bd
+                $this->tiposUsuariosId = $data['tipos_usuarios_id']; //array que vem do bd
+            }
+        }
+        $db->Desconectar();
+        return $db->total;
+        //se vier registro total = 1
+        //se nao vier = 0
+        //não pode ter registros duplicados (2 usuarios com mesmo email e senha)
+        //pega o ultimo pq tem foreach
+    }
+
+}
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\autenticationControllerPage.php:
+<?php
+session_start();
+//Se não existir a session login
+if(!isset($_SESSION['login'])){
+    header('location:../index.php?cod=172');
+}.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\biologiaPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<title>Biologia?</title>
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w8.png">
+    <label id="texto1" style="margin-top: 100px;">#10 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Biologia?</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">O que tudo isso tem a ver com biologia</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>            
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\desastrePage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w2.png">
+    <label id="texto1" style="margin-top: 100px;">#1 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">O desastre</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Em 1986, um trágico acidente nuclear assolou a pequena cidade de Pripyat, na
+Ucrânia, transformando-a em um lugar tenebroso e assustador, repleto de relatos
+sobre seres mutantes, monstros e mistérios intrigantes.</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>              
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\fisicaPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w9.png">
+    <label id="texto1" style="margin-top: 100px;">#9 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Física?</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">O que tudo isso tem a ver com fisica</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>             
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\footerPages.php:
+
+<style>
+    .footer:hover {
+        cursor: pointer;
+    }
+    .footer {
+        text-align: center !important;
+        font-size: 11px;
+        
+    }
+    #topico {
+        color: lightblue;
+    }
+</style>
+
+<footer>
+    <div class="footer">
+        <br/> 
+        <br/> 
+        
+        <img src="../img/chernobyl_b.png" align=”center” style="width: 8%; height: 8%;">
+<div class="container">
+            <div class="row" style="text-align: center;">
+                <div class="col-6" id="topico">
+                    Termos e aviso de privacidade
+                </div>
+                <div class="col-6" id="topico">
+                    2023, Chernobyl.com, Inc. ou suas afiliadas
+                </div>
+            </div>
+        </div>
+    </div>
+<br/> 
+</footer>
+</body>
+</html>.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\headerPages.php:
+<!DOCTYPE html>
+<!-- MENU - PARTE DE CIMA - PAGES-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="../js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="../js/jquery-3.5.1.js" type="text/javascript"></script>
+        <script src="../js/cdn.datatables.net_1.13.4_js_jquery.dataTables.min.js" type="text/javascript"></script>
+        <link href="../css/cdn.datatables.net_1.13.4_css_jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <style>
+            body {
+
+            }
+
+            .container{
+                text-align: center;
+                color: white;
+                border: solid thick black;
+                border-radius: 1em;
+            }
+
+
+        </style>
+
+    </head>
+    <body style="background-color: black;"> 
+        <div class="container" style="padding-top: 20px !important; text-align: center; background-color: black;">
+            <div class="row nav-pills">
+                <br/>
+                <div class="col-md-2">
+                    <a href="../inicio.php"><img src="../img/chernobyl_b.png" style="padding-top: 20px !important; text-align: center !important; height: 90%; width: 90%;"></a>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                    <a href="../inicio.php" class="nav-link"><b><br/>Home</b></a>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" class="nav-link"><b><br/>AAAAAAAA</b></a>
+                </div>
+                <div class="col-md-2">
+                    <a href="../arrayAssociativo.php" class="nav-link"><b><br/>Array table</b></a>
+                </div>
+            </div>
+            <br/>
+
+            <div class="col-md-4"></div>
+        </div>.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\impcurtoPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w3.png">
+    <label id="texto1" style="margin-top: 100px;">#3 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Impactos a curto prazo</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Impactos a curto prazo</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>              
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\implongoPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w4.png">
+    <label id="texto1" style="margin-top: 100px;">#4 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Impactos a longo prazo</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Impactos a longo prazo</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>             
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\introducaoPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<head>
+    <title>Introdução</title>
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+</head>
+
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w1.png">
+    <label id="texto1" style="margin-top: 100px;">#2 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Pripyat</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Introdução Pripyat</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>            
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\legadoPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w5.png">
+    <label id="texto1" style="margin-top: 100px;">#7 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Lições e Legado</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Lições e legado do desastre</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>             
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\pefeitoPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w7.png">
+    <label id="texto1" style="margin-top: 100px;">#6 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Pé de Elefante: experimento</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Como foi feito nosso pé de elefante</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>              
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\peintPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w6.png">
+    <label id="texto1" style="margin-top: 100px;">#5 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Pé de Elefante</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">Introdução pé de elefante</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>             
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\pages\quimicaPage.php:
+<?php
+require_once 'headerPages.php';
+require_once 'autenticationControllerPage.php';
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+<style>
+    
+</style>
+
+<link href="cssPages.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+    <img align="middle !important" id="fundo" src="../img/w10.png">
+    <label id="texto1" style="margin-top: 100px;">#8 no Brasil</label>
+    <label id="texto2" style="margin-top: 100px;">Química?</label>
+    <label id="texto3" style="margin-top: 100px; margin-right: 50%;">O que tudo isso tem a ver com quimica</label>
+    <label id="texto4" style="margin-top: 100px;">IMDb 6,6 1h 59min 2023 X-RAY</label>
+    <label id="texto5" style="margin-top: 100px;"><u>Drama</u> · <u>Ação</u> · <u>Suspense</u></label>
+    <label id="texto6" style="margin-top: 100px;"><img src="../img/selo.png" style="width: 25px; height: 25px;"> Incluído em Chernobyl</label>
+
+    <label id="texto7" style="margin-top: 100px;">   
+        <ul class="nav">
+            <li class><img id="play" src="../img/play.png" alt=""/></li>
+            <li class id="play" style="margin-left: 10px;"><br/>Reproduzir</li>
+            <li class="nav-item" id="play" style="margin-left: 30px;"> <img src="../img/1.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/2.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/4.png"> </li>
+            <li class="nav-item" id="play"> <img src="../img/5.png"> </li>
+        </ul></label>
+</div>
+
+<label id="texto8" style=""><b>Relacionados:</b></label>
+<br/>
+
+<div class="swiffy-slider">
+    <div class="slide">
+        <ul class="slider-container container-fluid">
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="introducaoPage.php"><img id="tela1" src="../img/rad2-p.jpg"></a>
+                    <a href="desastrePage.php"><img id="tela1" src="../img/ab-p.jpg"></a>
+                    <a href="impcurtoPage.php"><img id="tela1" src="../img/ani-p.jpg"></a>
+                    <a href="implongoPage.php"><img id="tela1" src="../img/mask-p.png"></a> 
+                    <a href="peintPage.php"><img id="tela1" src="../img/pe-p.jpg"></a>
+                </div><br/></li>
+            <li>
+                <div class id="topico" style="margin-left: 4%;" >
+                    <br/>
+                    <a href="pefeitoPage.php"><img id="tela1" src="../img/1449559.jpg"></a>
+                    <a href="legadoPage.php"><img id="tela1" src="../img/park-p.jpg"></a> 
+                    <a href="quimicaPage.php"><img id="tela1" src="../img/reat-p.jpg"></a>
+                    <a href="biologiaPage.php"><img id="tela1" src="../img/roda-p.jpg"></a>
+                    <a href="fisicaPage.php"><img id="tela1" src="../img/out-g.jpg"></a> 
+                </div><br/></li>              
+        </ul>
+    </div>
+
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <!-- numero de slides -->
+        <button></button>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+
+<?php
+
+require_once 'footerPages.php';
+?>
+.
+
+- Endereço: C:\xampp\htdocs\cherno2\shared\footer.php:
+
+<style>
+    .footer:hover {
+        cursor: pointer;
+    }
+    .footer {
+        text-align: center !important;
+        font-size: 11px;
+        
+    }
+    #topico {
+        color: lightblue;
+    }
+</style>
+
+<footer>
+    <div class="footer">
+        <br/> 
+        <br/> 
+        
+        <img src="img/chernobyl_b.png" align=”center” style="width: 8%; height: 8%;">
+    </div>
+<br/> 
+</footer>
+</body>
+</html>.
+
+- Endereço: C:\xampp\htdocs\cherno2\shared\header.php:
+<!DOCTYPE html>
+<!-- MENU - PARTE DE CIMA DO SITE -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+        <script src="js/cdn.datatables.net_1.13.4_js_jquery.dataTables.min.js" type="text/javascript"></script>
+        <link href="css/cdn.datatables.net_1.13.4_css_jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <style>
+            .container{
+                text-align: center;
+                color: white;
+                border: solid thick black;
+                border-radius: 1em;
+            }            
+        </style>
+        
+    </head>
+    <body style="background-color: black;"> 
+        <div class="container" style="padding-top: 20px !important; text-align: center !important; background-color: black !important;">
+            <div class="row nav-pills">
+                <br/>
+                <div class="col-md-2">
+                    <a href="inicio.php"><img src="img/chernobyl_b.png" style="text-align: center !important; height: 100% !important; width: 100%; !important"></a>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                    <a href="inicio.php" class="nav-link"><b><br/>Home</b></a>
+                </div>
+                <div class="col-md-2">
+                    <a href="arrayAssociativo.php" class="nav-link"><b><br/>Array table</b></a>
+                </div>
+                <div class="col-md-2">
+                    <a href="./listarPerfisPage.php" class="nav-link"><b><br/>Perfis</b></a>
+                </div>
+                <?php
+                            @session_start();
+                            if($_SESSION) {
+                                echo('
+                                    <div class="col-md-2">
+                                <a class="nav-link link-danger"
+                                   style="text-decoration: none;"
+                                   href="controller/logoutController.php?cod=logout"><br/><b>Logout</b></a>
+                            </div>');
+                            }
+                            ?>
+            </div>
+            <br/>
+
+            <div class="col-md-4"></div>
+        </div>
+        
+.
+

@@ -1,0 +1,7 @@
+XAMPP - ativar Apache e MySQL
+
+http://localhost/dashboard/ --> phpMyAdmin
+
+criar schema (se não existir) 'cherno'
+
+cherno --> importar --> selecionar arquivo Dump
